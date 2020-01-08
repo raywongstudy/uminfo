@@ -93,6 +93,9 @@ var my_methods = new Vue({
       var hours = this.addZero(d.getHours())
       var minutes = this.addZero(d.getMinutes())
       var seconds = this.addZero(d.getSeconds())
+      if(time_from.length < 4){
+        time_from = '0'+ time_from
+      }
       //now time
       //date_from=2019-09-09T12%3A30%3A00%2B08%3A00&date_to=2019-09-09T12%3A45%3A00%2B08%3A00
       let full_time_from = `${year}-${month}-${date}T${time_from[0]+time_from[1]}%3A${time_from[2]+time_from[3]}%3A00%2B08%3A00`
@@ -251,6 +254,10 @@ var bus = new Vue({
         }
       },
       bus_data_message:'',
+      bus_message_lists:{
+        'show':false,
+        'message':''
+      },
       bus_data_message_show:false,
     },
     created(){
@@ -283,8 +290,8 @@ var bus = new Vue({
         current_time_sec_ = current_time_sec_ + parseInt(current_time_sec[4].toString()+current_time_sec[5].toString())
 
         calc_cut = current_time_sec_ - time_from_
-        console.log(calc_cut)
-        this.testingggg(this.calcBusStationIndex(calc_cut))
+        console.log(current_time_sec_ +' - '+ time_from_ + ' = ' + calc_cut)
+        this.indexNumToLocation(this.calcBusStationIndex(calc_cut))
       },
       //for use calc_cut time to calc the bus station index number
       calcBusStationIndex(calc_cut){
@@ -299,9 +306,16 @@ var bus = new Vue({
           }
         }
       },
-      testingggg(index){
-        this.now_location = this.um_location[index-1]
-        this.next_location = this.um_location[index]
+      indexNumToLocation(index){
+        if(index = 99){
+          this.now_location = "研究生宿舍PGH"
+          this.next_location = "～等候中～"
+          this.bus_message_lists.show = true
+          this.bus_message_lists.message = "校巴正在研究生宿舍等候開車"
+        }else{
+          this.now_location = this.um_location[index-1]
+          this.next_location = this.um_location[index]
+        }
       },
       //first website run function
       open_web_loaded(){
@@ -361,7 +375,7 @@ var bus = new Vue({
       findTimeLine(current_time){
         let time_line = this.day_time_line //get day time line
         for(let i = 0;i<time_line.length;i++){
-          if(time_line[i].time_from < current_time){
+          if(time_line[i].time_from <= current_time){
             if(time_line[i].time_to > current_time){
               //check is it the service time
               this.check_service_time = 1
@@ -375,7 +389,7 @@ var bus = new Vue({
                 current_time_differ -= 100
               }
               this.bus_travel_time = current_time_differ % current_time_line.time_interlaced
-              console.log(`travel time: ${this.bus_travel_time}`)
+
               //count small time line
               this.current_time_line.small_time_line = {
                 'time_from':`${this.current_time - this.bus_travel_time}`,
@@ -399,6 +413,7 @@ var bus = new Vue({
           console.log(my_methods.api_result)
 
           this.loopBusData()
+          bus.busDataTimeCut()
 
         },10000)//every 10s to find the new location
       },
