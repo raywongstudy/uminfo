@@ -163,7 +163,8 @@ section{
   box-shadow:none;
 }
 .section-2 > div{
-  min-width:50%;
+  min-width:45%;
+  margin:2%;
 }
 .box-0px{
   height: 110px;
