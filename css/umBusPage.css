@@ -1,0 +1,27 @@
+/* main page */
+
+#um_bus{
+    width:100%;   
+}
+
+.macau_bus_section > section > a{
+    color:black;
+    text-decoration: none;
+    padding:0 40%;
+    width:100px;
+}
+.macau_bus_section{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+
+.macau_bus_section > section{
+    margin:5px;
+    flex:0;
+}
+
+.macau_bus_section::-webkit-scrollbar {
+    display: none;
+}

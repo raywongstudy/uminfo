@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- for page css -->
+    <link rel="stylesheet" href="css/umCanteenPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <title>Um Info</title>
+</head>
+<body>
+    
+    <header>
+        <a class="header_logo" href="um_canteen.html">UM Information</a>
+        <div class="header_fullscreen">
+            <a id="fullscreen_btn"><i class="fas fa-expand"></i></a>
+            <a id="closeFullscreen_btn"><i class="fas fa-compress"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <div id="um_canteen">
+            <!-- <div id="canteen_open_status" class="message_red">現時不是飯堂開放時間</div> -->
+            <div class="message">
+                <label for="select_college">請選擇你的書院：</label>
+                <select name="select_college" id="select_college" onchange="selectCollege(this.value)">
+                    <option value="CKPC">曹光彪書院</option>
+                    <option value="CYTC">鄭裕彤書院</option>
+                    <option value="CKLC">張崑崙書院</option>
+                    <option value="CKYC">蔡繼有書院</option>
+                    <option value="FPJC">霍英東珍禧書院</option>
+                    <option value="LCWC">呂志和書院</option>
+                    <option value="MLC">馬萬褀羅柏心書院</option>
+                    <option value="MCMC">滿珍紀念書院</option>
+                    <option value="SPC">紹邦書院</option>
+                    <option value="SEAC">何鴻燊東亞書院</option>
+                </select>
+            </div>
+            <div class="flex">
+                <section id = "menu_section" class="menu_section">
+                    <img src="images/menu_logo.png" alt="menu_logo.png">
+                    <div class="content">
+                        <h2>早餐菜單</h2>
+                        <h5>豉 油 皇 炒 米 粉 / 河 粉</h5>
+                        <h5>是 日 餐 粥</h5>
+                        <h5>茶 類 / 果 汁 / 牛奶</h5>
+                        <h5>蒸 腸 粉 / 陳 村 粉</h5>
+                        <h5>多 士 / 雞 蛋</h5>
+                        <h5>西 點 / 中 點</h5>
+                    </div>
+                </section>
+                <div id="menu_content" class="showContent">
+                    <section>
+                       <div class="close_content_btn close_menu_btn">
+                           <span></span>
+                           <span></span>
+                       </div>
+                       <div class="flex">
+                            <section id = "menu_section" class="menu_section">
+                                <img src="images/breakfast.png" alt="menu_logo.png">
+                                <div class="content">
+                                    <h2>早餐菜單</h2>
+                                    <h5>豉 油 皇 炒 米 粉 / 河 粉</h5>
+                                    <h5>是 日 餐 粥</h5>
+                                    <h5>茶 類 / 果 汁 / 牛奶</h5>
+                                    <h5>蒸 腸 粉 / 陳 村 粉</h5>
+                                    <h5>多 士 / 雞 蛋</h5>
+                                    <h5>西 點 / 中 點</h5>
+                                </div>
+                            </section>
+                       </div>
+                       <div class="flex">
+                            <section id = "menu_section" class="menu_section">
+                                <img src="images/lunch.png" alt="menu_logo.png">
+                                <div class="content">
+                                    <h2>午餐菜單</h2>
+                                    <h2>未獲得菜單資訊</h2>
+                                </div>
+                            </section>
+                       </div>
+                       <div class="flex">
+                            <section id = "menu_section" class="menu_section">
+                                <img src="images/dinner.png" alt="menu_logo.png">
+                                <div class="content">
+                                    <h2>晚餐菜單</h2>
+                                    <h2>未獲得菜單資訊</h2>
+                                </div>
+                            </section>
+                       </div>
+                    </section>
+                    <div class="show_content_bg show_menu_bg"></div>
+                </div>
+            </div>
+
+            <div class="flex">
+                <section class="">
+                    <div class="topic">現時飯堂人數</div>
+                    <div class="content">
+                        <h1 id="current_number_range">0</h1>
+                    </div>
+                </section>
+            </div>
+            <div class="flex">
+                <section class="">
+                    <div class="topic">排隊狀態</div>
+                    <div class="content">
+                    <h1 id="queue_status">未有數據</h1>
+                    </div>
+                </section>
+                <section class="">
+                    <div class="topic">今天用餐總次數</div>
+                    <div class="content">
+                    <h1 id="count_day_number">0</h1>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- 五味俱全 垂涎三尺 饕餮盛宴 油而不膩 難以下嚥 淡而無味 枯燥無味 -->
+            <div class="flex">
+                <section class="forum_section">
+                    <div class="content">
+                        <h2>飯堂討論區</h2>
+                        <h3>AI評價:淡而無味</h3>
+                    </div>
+                    <img src="images/forum_logo.png" alt="forum_logo.png">
+                </section>
+                <div id="forum_content" class="showContent">
+                    <section>
+                        <div class="close_content_btn close_forum_btn">
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="comment_box">
+                            <div class="comment_box_img">
+                                <img src="https://img.ruten.com.tw/s2/9/58/aa/21908875759786_433.jpg" alt="">
+                            </div>
+                            <input type="text" placeholder="說說你的想法～但功能未推出👻">
+                        </div>
+                        <div class="comment_box">
+                            <div class="comment_box_img">
+                                <img src="https://img.ruten.com.tw/s2/9/58/aa/21908875759786_433.jpg" alt="">
+                            </div>
+                            <div class="comment">你好～我是作者Ray</div>
+                        </div>
+                        <div class="comment_box">
+                            <div class="comment_box_img">
+                                <img src="https://img.ruten.com.tw/s2/9/58/aa/21908875759786_433.jpg" alt="">
+                            </div>
+                            <div class="comment">這個功能還未推出喔～</div>
+                        </div>
+                        <div class="comment_box">
+                            
+                            <div class="comment_box_img">
+                                <img src="https://img.ruten.com.tw/s2/9/58/aa/21908875759786_433.jpg" alt="">
+                            </div>
+                            <div class="comment">而且今天飯菜不太好食！</div>
+                        </div>
+                    </section>
+                    <div class="show_content_bg show_forum_bg"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <nav>
+            <ul>
+                <li><a href="myGamePage.html"><img src="" alt=""><i class="fas fa-gamepad"></i></a></li>
+                <li><a href="umSecrets.html"><img src="" alt=""><i class="fas fa-mask"></i></a></li>
+                <li><a href="index.html" ><img src="" alt=""><i class="fas fa-bus"></i></a></li>
+                <li><a href="um_canteen.html" class="select_page"><img src="" alt=""><i class="fas fa-utensils"></i></a></li>
+                <li><a href="#" id="alert_info"><img src="" alt=""><i class="fas fa-info-circle"></i></a></li>
+            </ul>
+        </nav>
+    </footer>
+
+
+
+</body>
+<script src="js/script.js"></script>
+<!-- for page js -->
+<script src="js/umCanteenPage.js"></script>
+</html>

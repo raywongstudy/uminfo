@@ -1,0 +1,115 @@
+/* menu section */
+.flex > .menu_section{
+    cursor: pointer;
+    padding:10px 30px;
+    align-items:center;
+    justify-content: center;
+}
+.menu_section > img{
+    flex:1;
+    width:100px;
+    height:100px;
+    margin:20px 20px 20px 0;
+}
+.menu_section > .content{
+    flex:2;
+    object-fit: contain;
+}
+.menu_section > .content > h2{
+    border-bottom:3px solid rgb(56, 148, 223);
+}
+
+#menu_content .menu_section > img{
+    flex:1;
+    width:50px;
+    height:50px;
+    margin:20px 20px 20px 0;
+}
+#menu_content .menu_section > .content{
+    flex:4;
+    object-fit: contain;
+}
+
+
+/* forum section */
+
+.flex > .forum_section{
+    cursor: pointer;
+    padding:10px 30px;
+    align-items: center;
+}
+.forum_section > img{
+    width:100px;
+    height: 100px;
+    margin: 20px 0 20px 20px;
+}
+.forum_section > .content{
+    object-fit: contain;
+}
+.forum_section > .content > h2{
+    border-bottom:3px solid rgb(56, 148, 223);
+}
+
+/* forum content */
+
+.showContent > section > .comment_box{
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.showContent > section > .comment_box > .comment_box_img{
+    width:40px;
+    height:40px;
+    margin:10px 5px;
+    border-radius: 50%;
+    border:1px solid #ccc;
+    overflow:hidden;
+}
+
+.comment_box_img > img{
+    width:100%;
+}
+
+.showContent > section > .comment_box:nth-child(2){
+    border-bottom:1px solid rgb(0, 0, 0);
+}
+
+.comment_box > .comment::before{
+    content:'';
+    position:absolute;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 10px 10px 10px 0px;
+    border-color: transparent #f0f0f0 transparent transparent;
+    /* box-shadow:0px 0px 3px 0px #ccc */
+    left:-10px;
+    top:10px;
+}
+.showContent > section > .comment_box > .comment{
+    position: relative;
+    margin:10px 5px;
+    width:80%;
+    min-height:40px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px 0px #ccc;
+    text-align: center;
+    line-height:40px;
+}
+
+.showContent > section > .comment_box > input{
+    margin:10px 5px;
+    width:80%;
+    min-height:40px;
+    border-radius: 5px;
+    border:1px solid #ccc;
+}
+
+
+
+/* menu_content section */
+
+#menu_content > section > .flex > section{
+    box-shadow: none;
+}

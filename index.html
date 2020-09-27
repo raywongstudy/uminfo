@@ -3,98 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  	<title>UM Info</title>
-    <link rel="icon" href="images/uminfo_logo.png">
-    <meta http-equiv="Pragma" content="no-cache">
-  	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- for page css -->
+    <link rel="stylesheet" href="css/umBusPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <title>Um Info</title>
 </head>
 <body>
-  <div id="app">
-    <header id="header">
-      <div id="header-bar">
-        <h3>飯堂資訊</h3>
-          <a href="#" class="menu-button" @click="navBarShow = !navBarShow">
-            <div></div>
-            <div></div>
-            <div></div>
-          </a>
-          <a href="#" @click="alertInfo" class="menu-info-btn"><img src="images/menu_info_logo.png" alt="info.png"></a>
-      </div>
-      <nav v-show="navBarShow">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="author-page.html">About Author</a></li>
-          <li><a href="game.html">Rock Paper Scissors</a></li>
-          <li><a href="cube-game.html">Cube Game</a></li>
-          <li><a href="um-bus-page.html">UM Bus Data</a></li>
-          <li><a href="http://umsecrets.tk/">UM Secrets</a></li>
-
-        </ul>
-      </nav>
-    </header>     
-  
     
-    <main id="canteen-people">
-      <section v-if="days == 5 || days == 1" class="special_meal">
-        中午 11:30 和 12:30 有限量的特色餐提供
-      </section>
-      <section class="today-menu">
-        <img src="images/menu_logo.png" alt="menu.png">
-        <div v-if="hours < 10 || hours >= 20" class="menu-info">
-          <h2>早餐菜單</h2>
-          <h4>豉 油 皇 炒 米 粉 / 河 粉</h4>
-          <h4>是 日 餐 粥</h4>
-          <h4>茶 類 / 果 汁 / 牛奶</h4>
-          <h4>蒸 腸 粉 / 陳 村 粉</h4>
-          <h4>多 士 / 雞 蛋</h4>
-          <h4>西 點 / 中 點</h4>
+    <header>
+        <a class="header_logo" href="index.html">UM Information</a>
+        <div class="header_fullscreen">
+            <a id="fullscreen_btn"><i class="fas fa-expand"></i></a>
+            <a id="closeFullscreen_btn"><i class="fas fa-compress"></i></a>
         </div>
-        <div v-if="hours >= 10 && hours < 14" class="menu-info">
-          <h2>午餐菜單</h2>
-          <h1>未有資料</h1>
+    </header>
+
+    <main>
+        <div id="um_bus">
+            <div id="latest_bus_open_message" class="message_red">未能獲取最新校巴數據</div>
+            <div id="latest_bus_message" class="message">未能獲取最新校巴數據</div>
+            <div class="flex">
+                <section class="" id="current_bus_section">
+                    <div class="topic">校巴現時位置</div> 
+                    <div class="content">
+                        <h1>FST</h1>
+                    </div>
+                </section>
+                <div id="current_bus_content" class="showContent">
+                    <section>
+                       <div class="close_content_btn close_current_bus_btn">
+                           <span></span>
+                           <span></span>
+                       </div>
+                       <div class="flex">
+                           
+                       </div>
+                    </section>
+                    <div class="show_content_bg show_current_bus_bg"></div>
+                </div>
+            </div>
+            <div class="flex">
+                <section class="">
+                    <div class="topic">下一站</div>
+                    <div class="content">
+                        <h1>FSS</h1>
+                    </div>
+                </section>
+            </div>
+            <h2 style="text-align: center;border-bottom:3px solid #ffcd45;font-weight: normal;">澳門來往澳大巴士</h2>
+            <div class="flex macau_bus_section" >
+                <section>
+                    <a href="https://bis.dsat.gov.mo:37812/macauweb/routeLine.html?routeName=71&direction=0&language=zh-tw&ver=3.6.6"><h2>71</h2></a>
+                </section>
+                <section>
+                    <a href="https://bis.dsat.gov.mo:37812/macauweb/routeLine.html?routeName=72&direction=0&language=zh-tw&ver=3.6.6"><h2>72</h2></a>
+                </section>
+                <section>
+                    <a href="https://bis.dsat.gov.mo:37812/macauweb/routeLine.html?routeName=73&direction=0&language=zh-tw&ver=3.6.6"><h2>73</h2></a>
+                </section>
+                <section>
+                    <a href="https://bis.dsat.gov.mo:37812/macauweb/routeLine.html?action=sd&routeName=N6&dir=0&language=zh-tw&ver=3.6.6"><h2>N6</h2></a>
+                </section>
+            </div>
         </div>
-        <div v-if="hours >= 14 && hours < 20" class="menu-info">
-          <h2>晚餐菜單</h2>
-          <h1>未有資料</h1>
-        </div>
-      </section>
-      <section class="canteen-people">
-        <div class="box-120px" >
-          <h2 style="margin:0px 14%">現時飯堂人數</h2>
-          <h1>{{items_length}}</h1>
-        </div>
-        <img :src="items_length>0 ? urlData.open : urlData.close" alt="open.jpg">
-      </section>
-      <section class="section-2">
-        <div class="queue-states">
-          <div class="box-0px">
-            <h2>排隊狀態</h2>
-            <h1 v-if="items_length > 80">人滿為患</h1>
-            <h1 v-if="items_length > 55 && items_length <= 80">人山人海</h1>
-            <h1 v-if="items_length > 30 && items_length <= 55">濟濟一堂</h1>
-            <h1 v-if="items_length > 0 && items_length <=30">寥寥無幾</h1>
-            <h1 v-if="items_length == 0">空無一人</h1>
-          </div>
-        </div>
-        <div class="weeked-all">
-          <div class="box-0px">
-            <h2>今天用餐總次數</h2>
-            <h1>{{full_day_people}}</h1>
-          </div>
-        </div>
-      </section>
     </main>
     
     <footer>
-      <p>Copyright © 2019 Ray wong , University of Macau.</p>
+        <nav>
+            <ul>
+                <li><a href="myGamePage.html"><img src="" alt=""><i class="fas fa-gamepad"></i></a></li>
+                <li><a href="umSecrets.html"><img src="" alt=""><i class="fas fa-mask"></i></a></li>
+                <li><a href="index.html" class="select_page"><img src="" alt=""><i class="fas fa-bus"></i></a></li>
+                <li><a href="um_canteen.html"><img src="" alt=""><i class="fas fa-utensils"></i></a></li>
+                <li><a href="#" id="alert_info"><img src="" alt=""><i class="fas fa-info-circle"></i></a></li>
+            </ul>
+        </nav>
     </footer>
-    
-  </div>
-    
+
+
 
 </body>
-
-<script type="text/javascript" src="js/script.js"></script>
+<script src="js/script.js"></script>
+<!-- for page js -->
+<script src="js/umBusPage.js"></script>
 </html>

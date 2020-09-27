@@ -1,0 +1,27 @@
+/* game box style */
+.game_box img{
+    width:100px;
+    height:100px;
+    object-fit: contain;
+    margin:0 20px;
+}
+.game_box .game_title{
+    text-align: center;
+    justify-items: center;
+}
+.game_box{
+    cursor: pointer;
+}
+.game_box:active{
+    background:#ccc;
+}
+.game_box .game_title > h1{
+    margin:30px 20px;
+    border-bottom:2px solid rgb(25, 103, 167);
+}
+
+.game_box > a{
+    text-decoration: none;
+    color: black;
+    display: flex;
+}
