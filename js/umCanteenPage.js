@@ -60,6 +60,7 @@ function getApiData(current_college,date_from,date_to,status){
       }
       if(status == 2){
         min_current_number = data._embedded.length
+
         if(min_current_number > 80){
           document.querySelector("#queue_status").innerText = '人滿為患'
         }else if(min_current_number > 60){
@@ -89,12 +90,15 @@ function getApiData(current_college,date_from,date_to,status){
 // --------------- main function
 function preTimeApiFunciton(status_code,current_college,hour_form,minute_form,hour_to,minute_to){
   prepare_time = [`${getTimeData()[1]}T${addZero(hour_form)}:${addZero(minute_form)}:00+08:00`,`${getTimeData()[1]}T${addZero(hour_to)}:${addZero(minute_to)}:00+08:00`]
-  getApiData(current_college,prepare_time[0],prepare_time[1],status_code)
+  getApiData(current_college,prepare_time[1],prepare_time[0],status_code)
 }
 function checkCollege(){
   if(localStorage['current_college']){
     document.querySelector("#select_college").value = localStorage['current_college']
     return localStorage['current_college']
+  }else{
+    document.querySelector("#select_college").value = "MLC"
+    return "MLC"
   }
 }
 function selectCollege(college){
@@ -128,7 +132,8 @@ function countCurrentNumber(){
   max_current_number = 0
   this.preTimeApiFunciton(2,current_college,getDelayTime(0)[0],getDelayTime(0)[1],getDelayTime(1800)[0],getDelayTime(1800)[1])
   this.preTimeApiFunciton(3,current_college,getDelayTime(0)[0],getDelayTime(0)[1],getDelayTime(3000)[0],getDelayTime(3000)[1])
-
+  console.log(min_current_number)
+  console.log(max_current_number)
 }
 
 // --------------- main use
@@ -136,7 +141,6 @@ function countCurrentNumber(){
 var count_day_total_number = 0
 var min_current_number = 0
 var max_current_number = 0
-
 var current_college = checkCollege()
 // main function
 clickShowBox(".forum_section",".close_forum_btn",".show_forum_bg","#forum_content")
