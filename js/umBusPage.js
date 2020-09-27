@@ -240,12 +240,18 @@ var bus_timetable = [
 var currentTimeline = getCurrentTimeLine(bus_timetable)
 // main
 clickShowBox("#current_bus_section",".close_current_bus_btn",".show_current_bus_bg","#current_bus_content")
-// for the latest bus open message
-document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
-// for the latest bus message
-getBusApiData(`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0],1)
-console.log(currentTimeline)
-
-predictBusStation(currentTimeline)
-
-console.log(getPreWeek())
+if(currentTimeline != null){
+  // for the latest bus open message
+  document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
+  // for the latest bus message
+  getBusApiData(`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0],1)
+  console.log(currentTimeline)
+  
+  predictBusStation(currentTimeline)
+  console.log(getPreWeek())
+}else{
+  document.getElementById("latest_bus_open_message").innerText = "現在不是校巴服務時間"
+  document.getElementById("latest_bus_message").style.display = "none"
+  document.getElementById("bus_current_station").innerText = "現在不是校巴服務時間"
+  document.getElementById("bus_next_station").innerText = "現在不是校巴服務時間"
+}
