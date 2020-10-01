@@ -134,8 +134,8 @@ function countDayTotalNumber(current_college){
 function countCurrentNumber(){
   min_current_number = 0
   max_current_number = 0
-  this.preTimeApiFunciton(3,current_college,getDelayTime(3000)[0],getDelayTime(3000)[1],getDelayTime(0)[0],getDelayTime(0)[1])
-  this.preTimeApiFunciton(2,current_college,getDelayTime(1800)[0],getDelayTime(1800)[1],getDelayTime(0)[0],getDelayTime(0)[1])
+  this.preTimeApiFunciton(3,current_college,getDelayTime(2700)[0],getDelayTime(2700)[1],getDelayTime(0)[0],getDelayTime(0)[1])
+  this.preTimeApiFunciton(2,current_college,getDelayTime(1200)[0],getDelayTime(1200)[1],getDelayTime(0)[0],getDelayTime(0)[1])
 }
 
 // --------------- main use
