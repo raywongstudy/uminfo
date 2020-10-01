@@ -91,8 +91,24 @@ function setWeekDate(dateStr, interval, isPre) {
 }
 
 // ----- use function
+function getPrepareStation(latest_data,last_week_data_interlaced){
+  let time_interlaced = 0
+  if(latest_data != 0){
+    time_interlaced = compareTwoDateTime(getTimeData()[0],latest_data.datetime)
+  }else{
+    let count = currentTimeline.small_time_line.time_from
+    time_interlaced = compareTwoDateTime(getTimeData()[0],`2020-04-06T${addZero(count[0])}:${addZero(count[1])}:${addZero(count[2])}`)
+  }
+  for(let i = 0 ; i < last_week_data_interlaced.length && time_interlaced > 0 ; i++){
+    time_interlaced -= last_week_data_interlaced[i]
+    if(time_interlaced <= 0){
+      document.querySelector("#bus_current_station").innerText = um_stations[i][0]
+      document.querySelector("#bus_next_station").innerText = um_stations[i][1]
+    }
+  }
+}
 
-function getLastDataInterlaced(latest_data,last_data){
+function getLastWeekDataInterlaced(last_data){
   let station_time_save = [0,0,0,0,0,0,0]
   let station_count_save = [0,0,0,0,0,0,0]
   for(let i = 0 ; i < last_data.length ; i++){
@@ -100,13 +116,11 @@ function getLastDataInterlaced(latest_data,last_data){
       if(um_location_api.indexOf(last_data[i].station) == um_location_api.indexOf(last_data[i + 1].station) + 1){
         station_count_save[um_location_api.indexOf(last_data[i].station)-1] += 1
         station_time_save[um_location_api.indexOf(last_data[i].station)-1] += compareTwoDateTime(last_data[i + 1].datetime,last_data[i].datetime)
-
-        console.log(last_data[i + 1].station)
-        console.log(last_data[i].station)
-        
-        console.log(station_time_save)
-        console.log(station_count_save)
-        console.log('---')
+        // console.log(last_data[i + 1].station)
+        // console.log(last_data[i].station)
+        // console.log(station_time_save)
+        // console.log(station_count_save)
+        // console.log('---')
       }
     }
   }
@@ -114,7 +128,8 @@ function getLastDataInterlaced(latest_data,last_data){
     station_time_save[k] /= station_count_save[k]
     station_time_save[k] = parseInt(station_time_save[k])
   }
-  console.log(station_time_save)
+  // console.log(station_time_save)
+  return station_time_save
 }
 
 function getBusApiData(status,date_from,date_to){
@@ -129,18 +144,17 @@ function getBusApiData(status,date_from,date_to){
         // ststus 1 for get the latest api data
         if(status == 1){
           if(data._embedded[0]){
-              let datetime_use = datetimeAnalysis(data._embedded[0].datetime)
-              document.getElementById("latest_bus_message").innerText = `校巴最近在${datetime_use[3]}時${datetime_use[4]}分${datetime_use[5]}秒抵達${data._embedded[0].station}巴士站`
+            let datetime_use = datetimeAnalysis(data._embedded[0].datetime)
+            document.getElementById("latest_bus_message").innerText = `校巴最近在${datetime_use[3]}時${datetime_use[4]}分${datetime_use[5]}秒抵達${data._embedded[0].station}巴士站`
           }
         }else if(status == 2){
           latest_data = data._embedded[0]
-          console.log(data._embedded)
         }else if(status == 3){
-          console.log(data._embedded)
           if(latest_data == null){
             latest_data = 0
           }
-          getLastDataInterlaced(latest_data,data._embedded)
+          let last_week_data_interlaced = getLastWeekDataInterlaced(data._embedded)
+          getPrepareStation(latest_data,last_week_data_interlaced)
         }
       }
     })
@@ -180,6 +194,7 @@ function compareTimeline(count_time,time_line){
             }
             e.small_time_line = small_time_line
             e.big_time_line = big_time_line
+             
             result = e
         }
     })
@@ -189,7 +204,9 @@ function predictBusStation(currentTimeline){
     // get current time line api
     getBusApiData(2,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
     // get last week time line api
-    getBusApiData(3,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
+    setTimeout(function(){
+      getBusApiData(3,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
+    }, 500);
 }
 
 // def value
@@ -286,12 +303,10 @@ if(currentTimeline != null){
   document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
   // for the latest bus message
   getBusApiData(1,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
-  console.log(currentTimeline)
   
   predictBusStation(currentTimeline)
-  console.log(getPreWeek())
 }else{
-  document.getElementById("latest_bus_open_message").innerText = "現在不是校巴服務時間"
+  document.getElementById("latest_bus_open_message").style.display = "none"
   document.getElementById("latest_bus_message").style.display = "none"
   document.getElementById("bus_current_station").innerText = "現在不是校巴服務時間"
   document.getElementById("bus_next_station").innerText = "現在不是校巴服務時間"
