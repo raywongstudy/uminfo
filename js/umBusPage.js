@@ -26,13 +26,15 @@ function getDelayTime(delay_time){
   }
 
 function getTimeData(delay_time){
+    // let d = new Date(2020,8,24)
     let d = new Date()
+    let t = new Date()
     let date = addZero(d.getDate())
     let year = d.getFullYear()
     let month = addZero(d.getMonth()+1)
-    let hours = addZero(d.getHours())
-    let minutes = addZero(d.getMinutes())
-    let seconds = addZero(d.getSeconds()) 
+    let hours = addZero(t.getHours())
+    let minutes = addZero(t.getMinutes())
+    let seconds = addZero(t.getSeconds()) 
     // full now current time
     let full_time = `${year}-${month}-${date}T${hours}:${minutes}:${seconds}+08:00`
     let full_date = `${year}-${month}-${date}`
@@ -82,6 +84,12 @@ function getPreWeek() {
     var preWeek = setWeekDate(dateStr, -7, false)
     preWeek = formatDate(preWeek)
     return preWeek
+}
+function getPreWeek2() {
+  let dateStr = getTimeData()[1]
+  var preWeek = setWeekDate(dateStr, -14, false)
+  preWeek = formatDate(preWeek)
+  return preWeek
 }
 function setWeekDate(dateStr, interval, isPre) {
     var arr = dateStr.split('-') // 獲取當前日期的年份，月份，日期
@@ -153,7 +161,11 @@ function getBusApiData(status,date_from,date_to){
           if(latest_data == null){
             latest_data = 0
           }
+          
           let last_week_data_interlaced = getLastWeekDataInterlaced(data._embedded)
+          if(data._embedded.length == 0){
+            getBusApiData(3,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
+          }
           getPrepareStation(latest_data,last_week_data_interlaced)
         }
       }
