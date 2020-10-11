@@ -64,7 +64,7 @@ function getApiData(current_college,date_from,date_to,status){
           max_current_number = min_current_number + 10
         }
         queue_status_number = (max_current_number - min_current_number) / 2 + min_current_number
-        console.log(queue_status_number)
+
         if(queue_status_number > 80){
           document.querySelector("#queue_status").innerText = '人滿為患'
         }else if(queue_status_number > 60){

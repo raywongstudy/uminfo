@@ -91,6 +91,12 @@ function getPreWeek2() {
   preWeek = formatDate(preWeek)
   return preWeek
 }
+function getPreWeek3() {
+  let dateStr = getTimeData()[1]
+  var preWeek = setWeekDate(dateStr, -21, false)
+  preWeek = formatDate(preWeek)
+  return preWeek
+}
 function setWeekDate(dateStr, interval, isPre) {
     var arr = dateStr.split('-') // 獲取當前日期的年份，月份，日期
     var date = new Date(arr[0], arr[1] - 1, arr[2])
@@ -123,7 +129,13 @@ function getLastWeekDataInterlaced(last_data){
     if(last_data[i + 1]){//check that is not the last one
       if(um_location_api.indexOf(last_data[i].station) == um_location_api.indexOf(last_data[i + 1].station) + 1){
         station_count_save[um_location_api.indexOf(last_data[i].station)-1] += 1
-        station_time_save[um_location_api.indexOf(last_data[i].station)-1] += compareTwoDateTime(last_data[i + 1].datetime,last_data[i].datetime)
+        compare_time = compareTwoDateTime(last_data[i + 1].datetime,last_data[i].datetime)
+        if(compare_time < 300){
+          station_time_save[um_location_api.indexOf(last_data[i].station)-1] += compare_time
+        }else{
+          return 0
+        }
+        // console.log(last_data[i + 1].datetime,last_data[i].datetime)
         // console.log(last_data[i + 1].station)
         // console.log(last_data[i].station)
         // console.log(station_time_save)
@@ -136,7 +148,7 @@ function getLastWeekDataInterlaced(last_data){
     station_time_save[k] /= station_count_save[k]
     station_time_save[k] = parseInt(station_time_save[k])
   }
-  // console.log(station_time_save)
+  console.log(station_time_save)
   return station_time_save
 }
 
@@ -157,14 +169,18 @@ function getBusApiData(status,date_from,date_to){
           }
         }else if(status == 2){
           latest_data = data._embedded[0]
-        }else if(status == 3){
+        }else if(status == 3 || status == 4){
           if(latest_data == null){
             latest_data = 0
           }
-          
           let last_week_data_interlaced = getLastWeekDataInterlaced(data._embedded)
-          if(data._embedded.length == 0){
-            getBusApiData(3,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
+          if(status == 4 && last_week_data_interlaced == 0){
+            last_week_data_interlaced = 1
+          }
+          if(data._embedded.length == 0 || last_week_data_interlaced == 0){
+            getBusApiData(4,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
+          }else if(data._embedded.length == 0 || last_week_data_interlaced == 1){
+            getBusApiData(4,`${getPreWeek3()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek2()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
           }
           getPrepareStation(latest_data,last_week_data_interlaced)
         }
