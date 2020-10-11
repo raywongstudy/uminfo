@@ -42,7 +42,21 @@
                            <span></span>
                        </div>
                        <div class="flex">
-                           
+                           <section class="predict_bus_time" style="box-shadow: none">
+                                <h1>你現在所在位置</h1>
+                                <select id="you_current_station" onchange="selectBusStation(this.value)">
+                                   <option value="0">研究生宿舍PGH</option>
+                                   <option value="1">劉少榮樓E4</option>
+                                   <option value="2">大學會堂N2</option>
+                                   <option value="3">行政樓N6</option>
+                                   <option value="4">科技學院E11</option>
+                                   <option value="5">人民社科樓E21</option>
+                                   <option value="6">法學院E32</option>
+                                   <option value="7">薈萃坊S4</option>
+                                </select>
+                               <h1>預計大約等候時間</h1>
+                               <h3 id="prepare_wait_time">請先選擇所在位置</h3>
+                           </section>
                        </div>
                     </section>
                     <div class="show_content_bg show_current_bus_bg"></div>

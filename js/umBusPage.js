@@ -105,7 +105,33 @@ function setWeekDate(dateStr, interval, isPre) {
 }
 
 // ----- use function
+
+function selectBusStation(select_station_value){
+  let count_predict_time = 0
+  if(select_station_value > predict_data[2] && select_station_value <= 8){
+    for(let i = predict_data[2] ; i < select_station_value; i++){
+      count_predict_time += predict_data[0][i]
+    }
+  }else if(select_station_value <= predict_data[2] && select_station_value >= 0){
+    for(let i = 0 ; i < select_station_value; i++){
+      count_predict_time += predict_data[0][i]
+    }
+    let count = currentTimeline.small_time_line.time_to
+    count_predict_time += compareTwoDateTime(getTimeData()[0],`2020-04-06T${addZero(count[0])}:${addZero(count[1])}:${addZero(count[2])}`)
+    if(select_station_value == predict_data[2] || (select_station_value == 0 && predict_data[2] == 8)){
+      document.querySelector("#prepare_wait_time").innerText = `校巴現時所在位置`
+      count_predict_time = 0
+    }
+  }
+  if(parseInt(count_predict_time / 60) > 0 && count_predict_time != 0){
+    document.querySelector("#prepare_wait_time").innerText = `約${parseInt(count_predict_time / 60)}分鐘${count_predict_time % 60}秒後到達`
+  }else if(count_predict_time != 0){
+    document.querySelector("#prepare_wait_time").innerText = `約${count_predict_time}秒後到達`
+  }
+}
+
 function getPrepareStation(latest_data,last_week_data_interlaced){
+  predict_data[0] = last_week_data_interlaced
   let time_interlaced = 0
   if(latest_data != 0){
     time_interlaced = compareTwoDateTime(getTimeData()[0],latest_data.datetime)
@@ -120,13 +146,18 @@ function getPrepareStation(latest_data,last_week_data_interlaced){
     // console.log('i: '+ i + ' => ' + time_interlaced + ' - ' + last_week_data_interlaced[i] + ' = ' + ( time_interlaced - last_week_data_interlaced[i]))
     time_interlaced -= last_week_data_interlaced[i]
     if(time_interlaced <= 0){
-      document.querySelector("#bus_current_station").innerText = um_stations[i][0]
-      document.querySelector("#bus_next_station").innerText = um_stations[i][1]
+      document.querySelector("#bus_current_station").innerText = um_stations_new[i][0]
+      predict_data[1] = um_stations_new[i]
+      predict_data[2] = i
+      document.querySelector("#bus_next_station").innerText = um_stations_new[i][1]
     }else if(time_interlaced > 0 && i+1 == last_week_data_interlaced.length){
-      document.querySelector("#bus_current_station").innerText = um_stations[8][0]
-      document.querySelector("#bus_next_station").innerText = um_stations[8][1]
+      document.querySelector("#bus_current_station").innerText = um_stations_new[8][0]
+      document.querySelector("#bus_next_station").innerText = um_stations_new[8][1]
+      predict_data[1] = um_stations[8]
+      predict_data[2] = 8
     }
   }
+
 }
 
 function getLastWeekDataInterlaced(last_data){
@@ -153,6 +184,10 @@ function getLastWeekDataInterlaced(last_data){
     }
   }
   for(let k = 0 ; k < station_time_save.length ; k++){
+    if(station_time_save[k] == 0 || station_count_save[k] == 0){
+      station_time_save[k] = 30
+      station_count_save[k] = 1
+    }
     station_time_save[k] /= station_count_save[k]
     station_time_save[k] = parseInt(station_time_save[k])
   }
@@ -170,16 +205,14 @@ function getBusApiData(status,date_from,date_to){
       },
       success: function(data) {
         // ststus 1 for get the latest api data
+        
         if(status == 1){
           if(data._embedded[0]){
+            latest_data = data._embedded[0]
             let datetime_use = datetimeAnalysis(data._embedded[0].datetime)
             document.getElementById("latest_bus_message").innerText = `校巴最近在${datetime_use[3]}時${datetime_use[4]}分${datetime_use[5]}秒抵達${data._embedded[0].station}巴士站`
           }
-        }else if(status == 2){
-          latest_data = data._embedded[0]
         }else if(status == 3 || status == 4){
-
-          // console.log('run api status '+ status)
           if(latest_data == null){
             latest_data = 0
           }
@@ -240,14 +273,14 @@ function compareTimeline(count_time,time_line){
 }
 function predictBusStation(currentTimeline){
   // get current time line api
-  getBusApiData(2,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
+  getBusApiData(1,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
   // get last week time line api
   setTimeout(function(){
     getBusApiData(3,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
   }, 500);
   setInterval(function(){
     // get current time line api
-    getBusApiData(2,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
+    getBusApiData(1,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
     // get last week time line api
     setTimeout(function(){
       getBusApiData(3,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_from[0])}:${addZero(currentTimeline.big_time_line.time_from[1])}:00+08:00`,`${getPreWeek()}T${addZero(currentTimeline.big_time_line.time_to[0])}:${addZero(currentTimeline.big_time_line.time_to[1])}:00+08:00`)
@@ -256,9 +289,11 @@ function predictBusStation(currentTimeline){
 }
 
 // def value
+var predict_data = []
 var um_location = ["研究生宿舍PGH","劉少榮樓E4","大學會堂N2","行政樓N6","科技學院E11","人民社科樓E21","法學院E32","薈萃坊S4"]
 var um_location_api = ["研究生宿舍","劉少榮樓","大學會堂","行政樓","FST","FSS","FLL","薈萃坊"]
-var um_stations = [["研究生宿舍","劉少榮樓"],["劉少榮樓","大學會堂"],["大學會堂","行政樓"],["行政樓","FST"],["FST","FSS"],["FSS","FLL"],["FLL","薈萃坊"],["薈萃坊","研究生宿舍"],["研究生宿舍(等待開車)","劉少榮樓"]]
+var um_stations = [["研究生宿舍","劉少榮樓"],["劉少榮樓","大學會堂"],["大學會堂","行政樓"],["行政樓","FST"],["FST","FSS"],["FSS","FLL"],["FLL","薈萃坊"],["薈萃坊","研究生宿舍"],["研究生宿舍","劉少榮樓"]]
+var um_stations_new = [["研究生宿舍PGH","劉少榮樓E4"],["劉少榮樓E4","大學會堂N2"],["大學會堂N2","行政樓N6"],["行政樓N6","科技學院E11"],["科技學院E11","人民社科樓E21"],["人民社科樓E21","法學院E32"],["法學院E32","薈萃坊S4"],["薈萃坊S4","研究生宿舍PGH"],["研究生宿舍(等待開車)","劉少榮樓"]]
 var bus_timetable = [
     school_day = {
       general:{
@@ -347,9 +382,7 @@ clickShowBox("#current_bus_section",".close_current_bus_btn",".show_current_bus_
 if(currentTimeline != null){
   // for the latest bus open message
   document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
-  // for the latest bus message
-  getBusApiData(1,`${getTimeData()[1]}T${addZero(currentTimeline.small_time_line.time_from[0])}:${addZero(currentTimeline.small_time_line.time_from[1])}:00+08:00`,getTimeData()[0])
-  
+
   predictBusStation(currentTimeline)
 }else{
   document.getElementById("latest_bus_open_message").style.display = "none"
