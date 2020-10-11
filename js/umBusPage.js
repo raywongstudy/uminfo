@@ -118,6 +118,9 @@ function getPrepareStation(latest_data,last_week_data_interlaced){
     if(time_interlaced <= 0){
       document.querySelector("#bus_current_station").innerText = um_stations[i][0]
       document.querySelector("#bus_next_station").innerText = um_stations[i][1]
+    }else if(time_interlaced > 0 && i+1 == last_week_data_interlaced.length){
+      document.querySelector("#bus_current_station").innerText = um_stations[i][0]
+      document.querySelector("#bus_next_station").innerText = um_stations[i][1]
     }
   }
 }
