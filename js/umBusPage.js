@@ -93,7 +93,7 @@ function getPreWeek2() {
 }
 function getPreWeek3() {
   let dateStr = getTimeData()[1]
-  var preWeek = setWeekDate(dateStr, -21, false)
+  var preWeek = setWeekDate(dateStr, -35, false)
   preWeek = formatDate(preWeek)
   return preWeek
 }
@@ -183,11 +183,13 @@ function getLastWeekDataInterlaced(last_data){
       }
     }
   }
+  
   for(let k = 0 ; k < station_time_save.length ; k++){
     if(station_time_save[k] == 0 || station_count_save[k] == 0){
       station_time_save[k] = 30
       station_count_save[k] = 1
     }
+    console.log(station_time_save)
     station_time_save[k] /= station_count_save[k]
     station_time_save[k] = parseInt(station_time_save[k])
   }
