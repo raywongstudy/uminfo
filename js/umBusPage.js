@@ -79,29 +79,11 @@ function formatDate(paramDate) {
     }
     return (year + '-' + month + '-' + day)
   }
-function getPreWeek() {
-    let dateStr = getTimeData()[1]
-    var preWeek = setWeekDate(dateStr, -7, false)
-    preWeek = formatDate(preWeek)
-    return preWeek
-}
 function getPreWeekNew(number) {
     let dateStr = getTimeData()[1]
     var preWeek = setWeekDate(dateStr, parseInt(number), false)
     preWeek = formatDate(preWeek)
     return preWeek
-}
-function getPreWeek2() {
-  let dateStr = getTimeData()[1]
-  var preWeek = setWeekDate(dateStr, -21, false)
-  preWeek = formatDate(preWeek)
-  return preWeek
-}
-function getPreWeek3() {
-  let dateStr = getTimeData()[1]
-  var preWeek = setWeekDate(dateStr, -35, false)
-  preWeek = formatDate(preWeek)
-  return preWeek
 }
 function setWeekDate(dateStr, interval, isPre) {
     var arr = dateStr.split('-') // 獲取當前日期的年份，月份，日期
