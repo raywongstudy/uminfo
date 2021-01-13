@@ -286,47 +286,17 @@ var bus_timetable = [
       general:{
         time_line:[
           {
-            time_from:[7,30,00],
-            time_to:[8,30,00],
+            time_from:[8,00,00],
+            time_to:[19,45,00],
             time_interlaced:15
-          },
-          {
-            time_from:[8,30,00],
-            time_to:[10,00,00],
-            time_interlaced:10
-          },
-          {
-            time_from:[10,00,00],
-            time_to:[12,00,00],
-            time_interlaced:15
-          },
-          {
-            time_from:[12,00,00],
-            time_to:[15,00,00],
-            time_interlaced:10,
-          },
-          {
-            time_from:[15,00,00],
-            time_to:[17,00,00],
-            time_interlaced:15
-          },
-          {
-            time_from:[17,00,00],
-            time_to:[19,00,00],
-            time_interlaced:10
-          },
-          {
-            time_from:[19,00,00],
-            time_to:[23,15,00],
-            time_interlaced:15
-          },
+          }
         ]
       },
       saturday:{
         time_line:[
           {
-            time_from:[7,30,00],
-            time_to:[23,15,00],
+            time_from:[8,00,00],
+            time_to:[19,45,00],
             time_interlaced:15
           }
         ]
