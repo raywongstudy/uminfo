@@ -231,7 +231,7 @@ function getCurrentTimeLine(bus_timetable){
   }else if(day == 6){
       return compareTimeline(all_count,bus_timetable[0].saturday.time_line)
   }else if(day == 0){
-      return compareTimeline(all_count,bus_timetable[1].public_holiday.time_line)
+      // return compareTimeline(all_count,bus_timetable[1].public_holiday.time_line)
   }
 }
 // use timeline and the current all time to sec compare
@@ -244,7 +244,8 @@ function compareTimeline(count_time,time_line){
             count_time_different = (count_time - count_time_from) % (e.time_interlaced * 60)
             var small_time_line = {
                 'time_from': [parseInt((count_time - count_time_different) / 3600),parseInt((count_time - count_time_different) % 3600 / 60),(count_time - count_time_different) % 3600 % 60],
-                'time_to': [parseInt((count_time - count_time_different + (e.time_interlaced * 60 )) / 3600),parseInt((count_time - count_time_different + (e.time_interlaced * 60)) % 3600 / 60),(count_time - count_time_different + (e.time_interlaced * 60)) % 3600 % 60]
+                'time_to': [parseInt((count_time - count_time_different + (e.time_interlaced * 60 )) / 3600),parseInt((count_time - count_time_different + (e.time_interlaced * 60)) % 3600 / 60),(count_time - count_time_different + (e.time_interlaced * 60)) % 3600 % 60],
+                'time_interlaced':e.time_interlaced
             }
             var big_time_line = {
               'time_from': [parseInt((count_time - count_time_different - 900) / 3600),parseInt((count_time - count_time_different - 900) % 3600 / 60),(count_time - count_time_different - 900) % 3600 % 60],
@@ -286,10 +287,40 @@ var bus_timetable = [
       general:{
         time_line:[
           {
-            time_from:[8,00,00],
-            time_to:[19,45,00],
+            time_from:[7,30,00],
+            time_to:[8,30,00],
             time_interlaced:15
-          }
+          },
+          {
+            time_from:[8,30,00],
+            time_to:[10,00,00],
+            time_interlaced:10
+          },
+          {
+            time_from:[10,00,00],
+            time_to:[12,00,00],
+            time_interlaced:15
+          },
+          {
+            time_from:[12,00,00],
+            time_to:[15,00,00],
+            time_interlaced:10,
+          },
+          {
+            time_from:[15,00,00],
+            time_to:[17,00,00],
+            time_interlaced:15
+          },
+          {
+            time_from:[17,00,00],
+            time_to:[19,00,00],
+            time_interlaced:10
+          },
+          {
+            time_from:[19,00,00],
+            time_to:[23,15,00],
+            time_interlaced:15
+          },
         ]
       },
       saturday:{
@@ -338,7 +369,12 @@ var currentTimeline = getCurrentTimeLine(bus_timetable)
 clickShowBox("#current_bus_section",".close_current_bus_btn",".show_current_bus_bg","#current_bus_content")
 if(currentTimeline != null){
   // for the latest bus open message
-  document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
+  console.log(currentTimeline.small_time_line)
+  if(currentTimeline.small_time_line.time_interlaced == 10){
+    document.getElementById("latest_bus_open_message").innerText = `現時為繁忙時段巴士將會不間斷行駛`
+  }else{
+    document.getElementById("latest_bus_open_message").innerText = `下一班車會在${currentTimeline.small_time_line.time_to[0]}時${currentTimeline.small_time_line.time_to[1]}分在研究生宿舍巴士站出發`
+  }
 
   predictBusStation(currentTimeline)
 }else{

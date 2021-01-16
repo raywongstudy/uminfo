@@ -38,17 +38,19 @@
 });
 
 
+    // \n\t(2)新增飯堂討論區介面🤝\
+    // \n\t(3)新增更多書院飯堂選項🍔\
+    // \n\t(4)澳大校巴報站更新V0.31🚌\
+    // \n\t(5)新增澳門來往澳大巴士🗃️\
+    // \n\t(6)新增預計校巴等候時間🚃\
+
 // ---- for alert information ----
   function alertInfo(){
-    alert("Uminfo.tech V0.21版本更新🎲\
-    \n\t(1)UmInfo大改版🔥\
-    \n\t(2)新增飯堂討論區介面🤝\
-    \n\t(3)新增更多書院飯堂選項🍔\
-    \n\t(4)澳大校巴報站更新V0.31🚌\
-    \n\t(5)新增澳門來往澳大巴士🗃️\
-    \n\t(6)新增預計校巴等候時間🚃\
+    alert("Uminfo.tech V0.22版本更新🎲\
+    \n\t最後更新日期：2021年1月16日🔥\
+    \n\t(1)巴士報站：繁忙時段＝》不間斷行駛🔥\
     \n\n-----作者的話-----\
-    \n希望大家在2020都身體健康🎉🎉\
+    \n希望大家在2021都身體健康🎉🎉\
     \n大家期待下次更新吧👻\nBy Ray👨🏼‍💻\n")
   }
   document.querySelector("#alert_info").addEventListener("click", function(e) {
